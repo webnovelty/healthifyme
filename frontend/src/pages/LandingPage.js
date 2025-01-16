@@ -3,6 +3,8 @@ import { Box, Typography, Button, Grid, Modal, TextField } from "@mui/material";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LandingPage = ({ setAuthenticated }) => {
   const [registerOpen, setRegisterOpen] = useState(false); // State for registration modal
@@ -25,19 +27,29 @@ const LandingPage = ({ setAuthenticated }) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
-          {
-            name,
+        {
+          name,
           email,
           password,
         }
       );
-      Cookies.set("token", response.data.token); // Save the token in cookies
+      // Сохраняем токен в cookies
+      Cookies.set("token", response.data.token, { expires: 1 }); // срок действия - 1 день
+
+      toast.success("Registration successful!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
       setAuthenticated(true); // Update authentication state
       setRegisterOpen(false);
       navigate("/"); // Redirect to the authenticated page
     } catch (error) {
       console.error(error.response?.data || "Registration failed");
-      alert(error.response?.data?.message || "Registration failed");
+        alert(error.response?.data?.message || "Registration failed");
+         toast.error(error.response?.data?.message || "Registration failed.", {
+           position: "top-center",
+           autoClose: 3000,
+         });
     }
   };
 
