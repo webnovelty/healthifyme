@@ -9,34 +9,38 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
-  LineChart,
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
 } from "recharts";
+import { DataContext } from "../context/DataContext";
 
 const Dashboard = () => {
-  // State for user name
-  const [userName, setUserName] = useState("User");
+  const { updateData } = useContext(DataContext);
 
-  // State for user data
+  const [userName, setUserName] = useState("User");
   const [userData, setUserData] = useState({
     water: 0,
     steps: 0,
     calories: 0,
   });
-  // State for history data
+  const [inputFields, setInputFields] = useState({
+    water: 0,
+    steps: 0,
+    calories: 0,
+  });
+
   const [historyData, setHistoryData] = useState([]);
-  // Fetch user name and data from API
+
   useEffect(() => {
     const fetchUserInfo = async () => {
       const token = Cookies.get("token");
@@ -46,9 +50,7 @@ const Dashboard = () => {
         const response = await axios.get(
           "http://localhost:5000/api/user/user-info",
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         setUserName(response.data.name || "User");
@@ -73,19 +75,34 @@ const Dashboard = () => {
     fetchUserInfo();
   }, []);
 
-  // Save the updated value to the database
-  const handleSave = async (field, value) => {
+  const handleSave = async (field) => {
     const token = Cookies.get("token");
+
     try {
-      const updatedData = { ...userData, [field]: value };
+      const inputValue = parseInt(inputFields[field], 10) || 0; // Значение из поля ввода
+      const updatedValue = userData[field] + inputValue; // Добавляем к текущему значению
+
       await axios.put(
         "http://localhost:5000/api/user/update",
-        { [field]: value },
+        { [field]: updatedValue },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setUserData(updatedData); // Update the state with the new value
+
+      updateData({ [field]: updatedValue });
+
+      setUserData((prev) => ({
+        ...prev,
+        [field]: updatedValue,
+      }));
+
+      // Сбрасываем только поле ввода
+      setInputFields((prev) => ({
+        ...prev,
+        [field]: 0,
+      }));
+
       toast.success(
         `${
           field.charAt(0).toUpperCase() + field.slice(1)
@@ -93,11 +110,6 @@ const Dashboard = () => {
         {
           position: "top-center",
           autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         }
       );
     } catch (error) {
@@ -105,11 +117,6 @@ const Dashboard = () => {
       toast.error("Failed to update data.", {
         position: "top-center",
         autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
       });
     }
   };
@@ -139,49 +146,45 @@ const Dashboard = () => {
   };
   return (
     <Box sx={{ padding: 4, backgroundColor: "#F5F5F5", minHeight: "100vh" }}>
-      {/* Toast Notification Container */}
       <ToastContainer />
 
-      {/* Header */}
       <Typography variant="h4" gutterBottom>
         Welcome, {userName}!
       </Typography>
 
-      {/* Tracking cards grid */}
       <Grid container spacing={3}>
         {[
-          { label: "Water", value: `${userData.water} kg`, field: "water" },
-          { label: "Steps", value: `${userData.steps} steps`, field: "steps" },
+          { label: "Water", field: "water" },
+          { label: "Steps", field: "steps" },
           {
             label: "Calories",
-            value: `${userData.calories} kcal`,
+
             field: "calories",
           },
         ].map((item) => (
-          <Grid item xs={12} md={4} key={item.label}>
+          <Grid item xs={12} md={4} key={item.field}>
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
                   {item.label}
                 </Typography>
+                <Typography variant="body1">{item.value}</Typography>
                 <TextField
                   fullWidth
                   margin="normal"
-                  label={`Enter ${item.label}`}
-                  value={userData[item.field]}
+                  label={`Add ${item.label}`}
+                  value={inputFields[item.field]}
                   onChange={(e) =>
-                    setUserData((prev) => ({
+                    setInputFields((prev) => ({
                       ...prev,
-                      [item.field]: e.target.value,
+                      [item.field]: parseInt(e.target.value, 10) || 0,
                     }))
                   }
                 />
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() =>
-                    handleSave(item.field, parseInt(userData[item.field], 10))
-                  }
+                  onClick={() => handleSave(item.field)}
                   sx={{ marginTop: 2 }}
                 >
                   Add
@@ -191,14 +194,13 @@ const Dashboard = () => {
           </Grid>
         ))}
       </Grid>
-      {/* End Day Button */}
+
       <Box mt={4}>
         <Button variant="contained" color="secondary" onClick={handleEndDay}>
           End Day
         </Button>
       </Box>
 
-      {/* Progress History */}
       <Box mt={4}>
         <Typography variant="h6" gutterBottom>
           Progress History
@@ -215,33 +217,6 @@ const Dashboard = () => {
             <Line type="monotone" dataKey="calories" stroke="#ffc658" />
           </LineChart>
         </ResponsiveContainer>
-      </Box>
-
-      {/* Recommendations block */}
-      <Box mt={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h6" gutterBottom>
-              Today's Recommendations
-            </Typography>
-            <Typography variant="body1">Keep up the great work!</Typography>
-          </CardContent>
-        </Card>
-      </Box>
-
-      {/* Action buttons */}
-      <Box mt={4} display="flex" gap={2}>
-        <Button variant="contained" color="primary">
-          Enter Data
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          component={Link}
-          to="/educational"
-        >
-          View Articles
-        </Button>
       </Box>
     </Box>
   );

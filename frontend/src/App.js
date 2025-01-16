@@ -17,6 +17,7 @@ import LandingPage from "./pages/LandingPage";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import Tracking from "./pages/Tracking";
+import { DataProvider } from "./context/DataContext"; // Import the DataProvider
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -40,45 +41,47 @@ const App = () => {
     return authenticated ? element : <Navigate to="/" />;
   };
 
-  return (
-    <Router>
-      {authenticated && (
-        <>
-          <NavBar
-            authenticated={authenticated}
-            setAuthenticated={setAuthenticated}
-            handleLogout={handleLogout}
-          />
-          <Toolbar />
-        </>
-      )}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            authenticated ? (
-              <Dashboard />
-            ) : (
-              <LandingPage setAuthenticated={setAuthenticated} />
-            )
-          }
-        />
-        <Route
-          path="/tracking"
-          element={<PrivateRoute element={<Tracking />} />}
-        />
-        <Route
-          path="/settings"
-          element={<PrivateRoute element={<Settings />} />}
-        />
-        <Route
-          path="/educational"
-          element={<PrivateRoute element={<Educational />} />}
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
-  );
+    return (
+      <DataProvider>
+        <Router>
+          {authenticated && (
+            <>
+              <NavBar
+                authenticated={authenticated}
+                setAuthenticated={setAuthenticated}
+                handleLogout={handleLogout}
+              />
+              <Toolbar />
+            </>
+          )}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                authenticated ? (
+                  <Dashboard />
+                ) : (
+                  <LandingPage setAuthenticated={setAuthenticated} />
+                )
+              }
+            />
+            <Route
+              path="/tracking"
+              element={<PrivateRoute element={<Tracking />} />}
+            />
+            <Route
+              path="/settings"
+              element={<PrivateRoute element={<Settings />} />}
+            />
+            <Route
+              path="/educational"
+              element={<PrivateRoute element={<Educational />} />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Router>
+      </DataProvider>
+    );
 };
 
 export default App;
