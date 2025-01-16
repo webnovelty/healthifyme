@@ -37,39 +37,39 @@
   }
 }
 .MuiAppBar-root {
-    position: fixed;
+  position: fixed;
   background-color: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(5px);
 }
+
+.MuiToolbar-root {
+  min-height: 50px !important; /* Уменьшаем высоту */
+  padding: 0 !important; /* Убираем внутренние отступы */
+  display: flex;
+  align-items: center; /* Центрируем содержимое по вертикали */
+}
+
 .logo {
-   
-  width: 100px; /* Базовый размер для логотипа */
-  height: auto; /* Автоматическое соотношение сторон */
-  transition: width 0.3s ease; /* Плавное изменение размера */
+  width: 200px;
+  height: auto;
+  transition: width 0.3s ease;
+  margin: 0; /* Убираем все внешние отступы */
 }
 
 @media (max-width: 1024px) {
   .logo {
-    width: 80px; /* Уменьшение размера для планшетов */
+    width: 150px; /* Размер для планшетов */
   }
 }
 
 @media (max-width: 768px) {
   .logo {
-    width: 60px; /* Ещё меньше для мобильных устройств */
+    width: 120px; /* Размер для мобильных устройств */
   }
 }
 
 @media (max-width: 480px) {
   .logo {
-    width: 50px; /* Для очень маленьких экранов */
+    width: 80px; /* Размер для маленьких экранов */
   }
-}
-body {
-  margin: 0;
-  padding: 0;
-}
-
-main {
-  margin-top: 64px; /* Adjust this value to match the height of the NavBar */
 }

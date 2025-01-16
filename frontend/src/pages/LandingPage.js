@@ -8,6 +8,8 @@ const LandingPage = ({ setAuthenticated }) => {
   const [registerOpen, setRegisterOpen] = useState(false); // State for registration modal
   const [loginOpen, setLoginOpen] = useState(false); // State for login modal
 
+  const [name, setName] = useState(""); // New state for the user's name
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,7 +25,8 @@ const LandingPage = ({ setAuthenticated }) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
-        {
+          {
+            name,
           email,
           password,
         }
@@ -142,6 +145,15 @@ const LandingPage = ({ setAuthenticated }) => {
           <Typography id="register-modal-title" variant="h6" gutterBottom>
             Register
           </Typography>
+         
+          <TextField
+            label="Name"
+            fullWidth
+            margin="normal"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
           <TextField
             label="Email"
             fullWidth

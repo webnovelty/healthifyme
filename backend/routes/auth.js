@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Registration
 router.post("/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { name,email, password } = req.body;
 
   try {
     // Check if the user exists
@@ -17,10 +17,17 @@ router.post("/register", async (req, res) => {
 
     // Create a new user
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, password: hashedPassword });
-    console.log("Hashed Password during registration:", hashedPassword);
+    const newUser = new User({ name, email, password: hashedPassword });
 
-    await newUser.save();
+      await newUser.save();
+      
+       const token = jwt.sign(
+         { id: newUser._id, name: newUser.name },
+         process.env.JWT_SECRET,
+         {
+           expiresIn: "1h",
+         }
+       );
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
@@ -54,5 +61,7 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error", error });
   }
 });
+
+
 
 module.exports = router;

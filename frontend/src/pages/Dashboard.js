@@ -8,8 +8,13 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 const Dashboard = () => {
+  // State for user name
+  const [userName, setUserName] = useState("User");
+
   // State for user data
   const [userData] = useState({
     weight: 75, // Example data
@@ -19,6 +24,31 @@ const Dashboard = () => {
 
   // State for recommendations
   const [recommendation, setRecommendation] = useState("");
+
+  // Fetch user name from API
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/user/user-info",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUserName(response.data.name || "User");
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+        Cookies.remove("token");
+      }
+    };
+
+    fetchUserName();
+  }, []);
 
   // Generate a recommendation based on data
   useEffect(() => {
@@ -35,7 +65,7 @@ const Dashboard = () => {
     <Box sx={{ padding: 4, backgroundColor: "#F5F5F5", minHeight: "100vh" }}>
       {/* Header */}
       <Typography variant="h4" gutterBottom>
-        Welcome, [User Name]!
+        Welcome, {userName}!
       </Typography>
 
       {/* Tracking cards grid */}

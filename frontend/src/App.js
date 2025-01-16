@@ -10,14 +10,13 @@ import {
 import NavBar from "./components/NavBar";
 import Dashboard from "./pages/Dashboard";
 import Educational from "./pages/Educational";
-import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import Register from "./pages/Register";
 import Settings from "./pages/Settings";
 import Tracking from "./pages/Tracking";
 import LandingPage from "./pages/LandingPage";
 import Cookies from "js-cookie"; // Using js-cookie for cookie management
 import "./App.css";
+import { Toolbar } from "@mui/material";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -44,18 +43,16 @@ const App = () => {
   return (
     <Router>
       {authenticated && (
-        <NavBar
-          authenticated={authenticated}
-          setAuthenticated={setAuthenticated}
-          handleLogout={handleLogout}
-        />
+        <>
+          <NavBar
+            authenticated={authenticated}
+            setAuthenticated={setAuthenticated}
+            handleLogout={handleLogout}
+          />
+        <Toolbar/>
+        </>
       )}
       <Routes>
-        <Route
-          path="/login"
-          element={<Login setAuthenticated={setAuthenticated} />}
-        />
-        <Route path="/register" element={<Register />} />
         <Route
           path="/"
           element={
