@@ -1,22 +1,22 @@
 // src/App.js
 
-import React, { useState, useEffect } from "react";
+import { Toolbar } from "@mui/material";
+import Cookies from "js-cookie"; // Using js-cookie for cookie management
+import React, { useEffect, useState } from "react";
 import {
   Navigate,
   Route,
   BrowserRouter as Router,
   Routes,
 } from "react-router-dom";
+import "./App.css";
 import NavBar from "./components/NavBar";
 import Dashboard from "./pages/Dashboard";
 import Educational from "./pages/Educational";
+import LandingPage from "./pages/LandingPage";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 import Tracking from "./pages/Tracking";
-import LandingPage from "./pages/LandingPage";
-import Cookies from "js-cookie"; // Using js-cookie for cookie management
-import "./App.css";
-import { Toolbar } from "@mui/material";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -37,7 +37,7 @@ const App = () => {
   };
 
   const PrivateRoute = ({ element }) => {
-    return authenticated ? element : <Navigate to="/login" />;
+    return authenticated ? element : <Navigate to="/" />;
   };
 
   return (
@@ -49,7 +49,7 @@ const App = () => {
             setAuthenticated={setAuthenticated}
             handleLogout={handleLogout}
           />
-        <Toolbar/>
+          <Toolbar />
         </>
       )}
       <Routes>
