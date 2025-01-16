@@ -37,12 +37,13 @@
   }
 }
 .MuiAppBar-root {
+    position: fixed;
   background-color: rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(5px);
 }
 .logo {
    
-  width: 200px; /* Базовый размер для логотипа */
+  width: 100px; /* Базовый размер для логотипа */
   height: auto; /* Автоматическое соотношение сторон */
   transition: width 0.3s ease; /* Плавное изменение размера */
 }
@@ -64,6 +65,11 @@
     width: 50px; /* Для очень маленьких экранов */
   }
 }
-.main-content {
-  margin-top: 80px; /* Высота вашего навигационного меню */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  margin-top: 64px; /* Adjust this value to match the height of the NavBar */
 }

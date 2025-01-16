@@ -17,15 +17,19 @@ import Settings from "./pages/Settings";
 import Tracking from "./pages/Tracking";
 import LandingPage from "./pages/LandingPage";
 import Cookies from "js-cookie"; // Using js-cookie for cookie management
-import "./App.css"
+import "./App.css";
 
 const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
-  // Check cookies on app load
+  // Check cookies on app load and whenever the authenticated state changes
   useEffect(() => {
     const token = Cookies.get("token");
-    setAuthenticated(!!token); // Set authenticated to true if token exists
+    if (token) {
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+    }
   }, []);
 
   const handleLogout = () => {
@@ -39,11 +43,13 @@ const App = () => {
 
   return (
     <Router>
-      <NavBar
-        authenticated={authenticated}
-        setAuthenticated={setAuthenticated}
-        handleLogout={handleLogout}
-      />
+      {authenticated && (
+        <NavBar
+          authenticated={authenticated}
+          setAuthenticated={setAuthenticated}
+          handleLogout={handleLogout}
+        />
+      )}
       <Routes>
         <Route
           path="/login"
@@ -52,7 +58,13 @@ const App = () => {
         <Route path="/register" element={<Register />} />
         <Route
           path="/"
-          element={authenticated ? <Dashboard /> : <LandingPage />}
+          element={
+            authenticated ? (
+              <Dashboard />
+            ) : (
+              <LandingPage setAuthenticated={setAuthenticated} />
+            )
+          }
         />
         <Route
           path="/tracking"
