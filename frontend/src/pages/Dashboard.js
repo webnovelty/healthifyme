@@ -135,13 +135,25 @@ const Dashboard = () => {
         position: "top-center",
         autoClose: 3000,
       });
-      setUserData({ water: 0, steps: 0, calories: 0 });
-    } catch (error) {
-      console.error("Error ending the day:", error);
-      toast.error("Failed to end the day.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+        setUserData({ water: 0, steps: 0, calories: 0 });
+       // Повторно запрашиваем данные истории
+    const historyResponse = await axios.get(
+      "http://localhost:5000/api/user/history",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    // Обновляем состояние графика
+    setHistoryData(historyResponse.data);
+  } catch (error) {
+    console.error("Error ending the day:", error);
+
+    // Отображаем уведомление об ошибке
+    toast.error("Failed to end the day.", {
+      position: "top-center",
+      autoClose: 3000,
+    });
     }
   };
   return (

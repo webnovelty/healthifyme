@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { Box, Typography, Button, Grid, Modal, TextField } from "@mui/material";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { Box, Button, Grid, Modal, TextField, Typography } from "@mui/material";
 import axios from "axios";
+import Cookies from "js-cookie";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import logo from "../image/healthifyme.svg"; // Importing the logo
 
 const LandingPage = ({ setAuthenticated }) => {
   const [registerOpen, setRegisterOpen] = useState(false); // State for registration modal
@@ -45,11 +46,11 @@ const LandingPage = ({ setAuthenticated }) => {
       navigate("/"); // Redirect to the authenticated page
     } catch (error) {
       console.error(error.response?.data || "Registration failed");
-        alert(error.response?.data?.message || "Registration failed");
-         toast.error(error.response?.data?.message || "Registration failed.", {
-           position: "top-center",
-           autoClose: 3000,
-         });
+      alert(error.response?.data?.message || "Registration failed");
+      toast.error(error.response?.data?.message || "Registration failed.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
     }
   };
 
@@ -71,69 +72,161 @@ const LandingPage = ({ setAuthenticated }) => {
       alert(error.response?.data?.message || "Login failed");
     }
   };
-
   return (
     <Box
       sx={{
-        background: "linear-gradient(to right, #1c1c1c, #39b8d6)",
+        backgroundImage: 'url("/bg.jpeg")', // Путь к вашему изображению
+        backgroundSize: "cover", // Изображение полностью покрывает фон
+        backgroundPosition: "center", // Центрируем изображение
+        backgroundRepeat: "no-repeat", // Избегаем повторения изображения
+        color: "white",
+        position: "relative",
         minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
         padding: 4,
+        display: "flex",
+        flexDirection: { xs: "column", md: "row" }, // Колонка на мобильных, строка на десктопах
+        justifyContent: "center",
+        alignItems: { xs: "center", md: "flex-start" }, // Центр на мобильных, слева на десктопах
       }}
     >
-      <Typography variant="h3" color="#fff" fontWeight="bold" gutterBottom>
-        Your health, your way—start today.
-      </Typography>
-      <Typography variant="h1" color="#39b8d6" fontWeight="bold" gutterBottom>
-        WELCOME
-      </Typography>
-      <Typography
-        variant="body1"
-        color="#fff"
-        align="center"
-        sx={{ maxWidth: "600px", marginBottom: 4 }}
+      {/* Затемняющий слой */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.5)", // Полупрозрачный черный слой
+          zIndex: 1, // Задний план для слоя
+        }}
+      ></Box>
+      {/* Header */}
+
+      {/* Header Section */}
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 2,
+          flex: "0 1 auto",
+          display: "flex",
+          justifyContent: { xs: "center", md: "flex-start" }, // Центр на мобильных, слева на десктопах
+          alignItems: "center",
+          padding: 2,
+          gap: { xs: "20px", md: "250px" },
+        }}
       >
-        Take control of your well-being with our easy-to-use tools designed to
-        help you live your healthiest life. Track Your Weight: Monitor your
-        progress and set achievable goals. Hydration Made Simple: Stay on top of
-        your daily water intake with reminders and insights. Calorie Management:
-        Balance your diet with accurate calorie tracking tailored to your needs.
-        Whether you’re starting your fitness journey or looking to maintain a
-        healthy lifestyle, we’re here to support you every step of the way.
-        Empower yourself with actionable data and take the guesswork out of your
-        health habits. Your health, your way—start today.
-      </Typography>
-
-      <Grid container spacing={4} justifyContent="center">
-        <Grid item>
-          <Typography variant="h5" color="#fff">
-            50+ <br /> EXPERT COACHES
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="h5" color="#fff">
-            200+ <br /> MEMBERS JOINED
-          </Typography>
-        </Grid>
-      </Grid>
-
-      <Box mt={4}>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ marginRight: 2 }}
-          onClick={handleRegisterOpen}
+        {/* Логотип */}
+        <Box
+          sx={{
+            position: "relative",
+            zIndex: 2,
+            flex: 1, // Занимает одну часть пространства
+            display: "flex",
+            justifyContent: { xs: "center", md: "flex-start" }, // Центр на мобильных, слева на десктопах
+            alignItems: "center",
+            padding: 2,
+            gap: { xs: "20px", md: "250px" },
+          }}
         >
-          Join Us
-        </Button>
-        <Button variant="outlined" color="secondary" onClick={handleLoginOpen}>
-          Get Started
-        </Button>
+          <img src={logo} alt="HealthifyMe Logo" className="logo_on_LG" />
+        </Box>
+
+        {/* Белая фраза */}
+        <Box
+          sx={{
+            position: "relative",
+            zIndex: 2,
+            flex: "1 1 auto",
+            textAlign: { xs: "center", md: "left" }, // Центр на мобильных, слева на десктопах
+            padding: 2,
+            marginTop: { xs: 4, md: 0 }, // Отступ сверху на мобильных
+          }}
+        >
+          <Typography
+            variant="h2"
+            gutterBottom
+            sx={{ fontWeight: "bold", marginBottom: 2 }}
+          >
+            Your Health, Your Way
+          </Typography>
+          <Typography variant="h5" sx={{ marginBottom: 4 }}>
+            Start your fitness journey today!
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" }, // Вертикальная колонка на мобильных, горизонтальная на десктопах
+              justifyContent: { xs: "center", md: "flex-end" }, // Центр на мобильных, справа на десктопах
+              gap: 2, // Расстояние между кнопками
+              marginTop: 2,
+            }}
+          >
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                backgroundColor: "#87CEEB", // Зеленый цвет фона
+                color: "white", // Белый текст
+                padding: "10px 20px", // Увеличиваем внутренние отступы
+                fontSize: "16px", // Увеличиваем размер шрифта
+                fontWeight: "bold", // Делаем текст жирным
+                borderRadius: "30px", // Закругленные края
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", // Тень
+                transition: "all 0.3s ease", // Анимация при наведении
+                "&:hover": {
+                  backgroundColor: "#45a049", // Более темный зеленый при наведении
+                  transform: "scale(1.05)", // Легкое увеличение кнопки
+                },
+              }}
+              onClick={handleRegisterOpen}
+            >
+              Join Us
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{
+                backgroundColor: "#4CAF50", // Зеленый цвет фона
+                color: "white", // Белый текст
+                padding: "10px 20px", // Увеличиваем внутренние отступы
+                fontSize: "16px", // Увеличиваем размер шрифта
+                fontWeight: "bold", // Делаем текст жирным
+                borderRadius: "30px", // Закругленные края
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", // Тень
+                transition: "all 0.3s ease", // Анимация при наведении
+                "&:hover": {
+                  backgroundColor: "#45a049", // Более темный зеленый при наведении
+                  transform: "scale(1.05)", // Легкое увеличение кнопки
+                },
+              }}
+              onClick={handleLoginOpen}
+            >
+              Get Started
+            </Button>
+          </Box>
+        </Box>
       </Box>
 
+      {/* Основной контент */}
+      <Box
+        sx={{
+          position: "relative",
+          zIndex: 2,
+          textAlign: "center",
+          marginTop: "50px",
+        }}
+      >
+        {/* Fitness Highlights */}
+        <Grid
+          container
+          spacing={4}
+          sx={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+          }}
+        ></Grid>
+      </Box>
       {/* Registration Modal */}
       <Modal
         open={registerOpen}
@@ -157,7 +250,7 @@ const LandingPage = ({ setAuthenticated }) => {
           <Typography id="register-modal-title" variant="h6" gutterBottom>
             Register
           </Typography>
-         
+
           <TextField
             label="Name"
             fullWidth

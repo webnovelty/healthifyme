@@ -1,41 +1,4 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 .MuiAppBar-root {
   position: fixed;
   background-color: rgba(0, 0, 0, 0.5) !important;
@@ -71,5 +34,29 @@
 @media (max-width: 480px) {
   .logo {
     width: 80px; /* Размер для маленьких экранов */
+  }
+}
+
+.logo_on_LG {
+  width: 500px;
+  height: auto;
+  transition: width 0.3s ease;
+  margin: 0; /* Убираем все внешние отступы */
+}
+@media (max-width: 1024px) {
+  .logo_on_LG {
+    width: 300px; /* Размер для планшетов */
+  }
+}
+
+@media (max-width: 768px) {
+  .logo_on_LG {
+    width: 200px; /* Размер для мобильных устройств */
+  }
+}
+
+@media (max-width: 480px) {
+  .logo_on_LG {
+    width: 200px; /* Размер для маленьких экранов */
   }
 }

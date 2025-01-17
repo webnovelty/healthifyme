@@ -28,7 +28,7 @@ const NavBar = ({ authenticated, handleLogout }) => {
         position="relative"
         sx={{
           boxShadow: "none", // Remove shadow for a flat look
-         
+          
         }}
       >
         <Toolbar>
