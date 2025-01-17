@@ -1,13 +1,13 @@
 const express = require("express");
 const multer = require("multer");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User"); // Модель пользователя
+const User = require("../models/User"); 
 const DailyData = require("../models/DailyData");
 const router = express.Router();
 const path = require("path");
 const upload = multer({ dest: "uploads/" });
 
-// Middleware для проверки токена
+// Middleware for token verification
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -17,7 +17,7 @@ const authenticate = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.id; // Добавляем userId в запрос
+    req.userId = decoded.id; 
     next();
   } catch (error) {
     console.error(error);
@@ -25,7 +25,7 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// Получение информации о пользователе
+// Getting information about the user
 router.get("/user-info", authenticate, async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -36,7 +36,7 @@ router.get("/user-info", authenticate, async (req, res) => {
 
     res.status(200).json({
       name: user.name,
-      avatar: user.avatar || "/default-avatar.png", // Добавляем путь к аватару
+      avatar: user.avatar || "/default-avatar.png", 
       weight: user.weight || 0,
       height: user.height || 0,
       age: user.age || 0,
@@ -50,23 +50,23 @@ router.get("/user-info", authenticate, async (req, res) => {
   }
 });
 
-// Обновление данных пользователя (включая аватар)
+// Update user data (including avatar)
 router.put(
   "/update",
   authenticate,
   upload.single("avatar"),
   async (req, res) => {
-    const { weight, height, age, water, steps, calories } = req.body; // Получаем данные из тела запроса
-    const avatar = req.file ? `/uploads/${req.file.filename}` : undefined; // Обработка аватарки
+    const { weight, height, age, water, steps, calories } = req.body; 
+    const avatar = req.file ? `/uploads/${req.file.filename}` : undefined; 
 
     try {
-      const user = await User.findById(req.userId); // Ищем пользователя в базе данных
+      const user = await User.findById(req.userId);
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
 
-      // Обновляем данные, если они присутствуют в запросе
+      // Update the data if it is present in the request
       if (weight !== undefined) user.weight = parseFloat(weight);
       if (height !== undefined) user.height = parseFloat(height);
       if (age !== undefined) user.age = parseInt(age, 10);
@@ -75,7 +75,7 @@ router.put(
       if (calories !== undefined) user.calories = parseInt(calories, 10);
       if (avatar) user.avatar = avatar;
 
-      await user.save(); // Сохраняем изменения в базе данных
+      await user.save(); 
 
       res.status(200).json({
         message: "User data updated successfully",
@@ -88,7 +88,7 @@ router.put(
   }
 );
 
-// Обновление только аватарки
+// Update only the avatar
 router.put(
   "/update-avatar",
   authenticate,
@@ -120,7 +120,7 @@ router.put(
   }
 );
 
-// Сохранение данных дня
+// Saving the day's data
 router.post("/end-day", authenticate, async (req, res) => {
   try {
     const userId = req.userId;
@@ -133,7 +133,6 @@ router.post("/end-day", authenticate, async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Сохраняем данные дня
     const dailyData = new DailyData({
       userId,
       date: today,
@@ -144,7 +143,7 @@ router.post("/end-day", authenticate, async (req, res) => {
 
     await dailyData.save();
 
-    // Сбрасываем текущие данные пользователя
+    // Reset the current user data
     user.water = 0;
     user.steps = 0;
     user.calories = 0;
@@ -160,7 +159,7 @@ router.post("/end-day", authenticate, async (req, res) => {
   }
 });
 
-// Получение всех данных пользователя
+// Get all user data
 router.get("/history", authenticate, async (req, res) => {
   try {
     const userId = req.userId;

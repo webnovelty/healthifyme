@@ -3,9 +3,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import logo from "../image/healthifyme.svg"; // Importing the logo
+import logo from "../image/healthifyme.svg"; 
 
 const LandingPage = ({ setAuthenticated }) => {
   const [registerOpen, setRegisterOpen] = useState(false); // State for registration modal
@@ -24,35 +24,56 @@ const LandingPage = ({ setAuthenticated }) => {
   const handleLoginOpen = () => setLoginOpen(true);
   const handleLoginClose = () => setLoginOpen(false);
 
-  const handleRegister = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
-        {
-          name,
-          email,
-          password,
-        }
-      );
-      // Сохраняем токен в cookies
-      Cookies.set("token", response.data.token, { expires: 1 }); // срок действия - 1 день
+    const handleRegister = async () => {
+      // Check that all fields are filled in
+      if (!name.trim() || !email.trim() || !password.trim()) {
+        toast.error("All fields are required!", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        return; // Stop execution if validation fails
+      }
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/auth/register",
+          {
+            name,
+            email,
+            password,
+          }
+        );
+        // Save the token to cookies
+        Cookies.set("token", response.data.token, { expires: 1 }); // validity period - 1 day
 
-      toast.success("Registration successful!", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      setAuthenticated(true); // Update authentication state
-      setRegisterOpen(false);
-      navigate("/"); // Redirect to the authenticated page
-    } catch (error) {
-      console.error(error.response?.data || "Registration failed");
-      alert(error.response?.data?.message || "Registration failed");
-      toast.error(error.response?.data?.message || "Registration failed.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-    }
-  };
+        toast.success("Registration successful!", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+        setAuthenticated(true); // Update authentication state
+        setRegisterOpen(false);
+        navigate("/"); // Redirect to the authenticated page
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || "Registration failed.";
+        console.error(errorMessage);
+
+        // Показываем ошибку через toast
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    };
 
   const handleLogin = async () => {
     try {
@@ -68,28 +89,41 @@ const LandingPage = ({ setAuthenticated }) => {
       setLoginOpen(false); // Close the login modal
       navigate("/"); // Redirect to the authenticated page
     } catch (error) {
-      console.error(error.response?.data || "Login failed");
-      alert(error.response?.data?.message || "Login failed");
+      const errorMessage = error.response?.data?.message || "Login failed.";
+      console.error(errorMessage);
+
+      // Показываем ошибку через toast
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   };
   return (
     <Box
       sx={{
-        backgroundImage: 'url("/bg.jpeg")', // Путь к вашему изображению
-        backgroundSize: "cover", // Изображение полностью покрывает фон
-        backgroundPosition: "center", // Центрируем изображение
-        backgroundRepeat: "no-repeat", // Избегаем повторения изображения
+        backgroundImage: 'url("/bg.jpeg")',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
         color: "white",
         position: "relative",
         minHeight: "100vh",
         padding: 4,
         display: "flex",
-        flexDirection: { xs: "column", md: "row" }, // Колонка на мобильных, строка на десктопах
+        flexDirection: { xs: "column", md: "row" },
         justifyContent: "center",
-        alignItems: { xs: "center", md: "flex-start" }, // Центр на мобильных, слева на десктопах
+        alignItems: { xs: "center", md: "flex-start" },
       }}
     >
-      {/* Затемняющий слой */}
+      {/* Toast Notification Container */}
+      <ToastContainer />
+      {/* Blackout Layer */}
       <Box
         sx={{
           position: "absolute",
@@ -97,8 +131,8 @@ const LandingPage = ({ setAuthenticated }) => {
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundColor: "rgba(0, 0, 0, 0.5)", // Полупрозрачный черный слой
-          zIndex: 1, // Задний план для слоя
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          zIndex: 1, // Background for the layer
         }}
       ></Box>
       {/* Header */}
@@ -110,7 +144,7 @@ const LandingPage = ({ setAuthenticated }) => {
           zIndex: 2,
           flex: "0 1 auto",
           display: "flex",
-          justifyContent: { xs: "center", md: "flex-start" }, // Центр на мобильных, слева на десктопах
+          justifyContent: { xs: "center", md: "flex-start" },
           alignItems: "center",
           padding: 2,
           gap: { xs: "20px", md: "250px" },
@@ -121,9 +155,9 @@ const LandingPage = ({ setAuthenticated }) => {
           sx={{
             position: "relative",
             zIndex: 2,
-            flex: 1, // Занимает одну часть пространства
+            flex: 1,
             display: "flex",
-            justifyContent: { xs: "center", md: "flex-start" }, // Центр на мобильных, слева на десктопах
+            justifyContent: { xs: "center", md: "flex-start" }, 
             alignItems: "center",
             padding: 2,
             gap: { xs: "20px", md: "250px" },
@@ -132,15 +166,15 @@ const LandingPage = ({ setAuthenticated }) => {
           <img src={logo} alt="HealthifyMe Logo" className="logo_on_LG" />
         </Box>
 
-        {/* Белая фраза */}
+        
         <Box
           sx={{
             position: "relative",
             zIndex: 2,
             flex: "1 1 auto",
-            textAlign: { xs: "center", md: "left" }, // Центр на мобильных, слева на десктопах
+            textAlign: { xs: "center", md: "left" }, 
             padding: 2,
-            marginTop: { xs: 4, md: 0 }, // Отступ сверху на мобильных
+            marginTop: { xs: 4, md: 0 }, 
           }}
         >
           <Typography
@@ -156,27 +190,28 @@ const LandingPage = ({ setAuthenticated }) => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: { xs: "column", md: "row" }, // Вертикальная колонка на мобильных, горизонтальная на десктопах
-              justifyContent: { xs: "center", md: "flex-end" }, // Центр на мобильных, справа на десктопах
-              gap: 2, // Расстояние между кнопками
+              flexDirection: { xs: "column", md: "row" },
+              justifyContent: { xs: "center", md: "flex-end" }, 
+              gap: 2, 
               marginTop: 2,
             }}
           >
             <Button
+              aria-label="Register as a new user"
               variant="contained"
               color="primary"
               sx={{
-                backgroundColor: "#87CEEB", // Зеленый цвет фона
-                color: "white", // Белый текст
-                padding: "10px 20px", // Увеличиваем внутренние отступы
-                fontSize: "16px", // Увеличиваем размер шрифта
-                fontWeight: "bold", // Делаем текст жирным
-                borderRadius: "30px", // Закругленные края
-                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", // Тень
-                transition: "all 0.3s ease", // Анимация при наведении
+                backgroundColor: "#87CEEB", 
+                color: "white", 
+                padding: "10px 20px", 
+                fontSize: "16px", 
+                fontWeight: "bold", 
+                borderRadius: "30px", 
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", 
+                transition: "all 0.3s ease", 
                 "&:hover": {
-                  backgroundColor: "#45a049", // Более темный зеленый при наведении
-                  transform: "scale(1.05)", // Легкое увеличение кнопки
+                  backgroundColor: "#45a049", 
+                  transform: "scale(1.05)", 
                 },
               }}
               onClick={handleRegisterOpen}
@@ -184,20 +219,21 @@ const LandingPage = ({ setAuthenticated }) => {
               Join Us
             </Button>
             <Button
+              aria-label="Start exploring the application"
               variant="outlined"
               color="secondary"
               sx={{
-                backgroundColor: "#4CAF50", // Зеленый цвет фона
-                color: "white", // Белый текст
-                padding: "10px 20px", // Увеличиваем внутренние отступы
-                fontSize: "16px", // Увеличиваем размер шрифта
-                fontWeight: "bold", // Делаем текст жирным
-                borderRadius: "30px", // Закругленные края
-                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", // Тень
-                transition: "all 0.3s ease", // Анимация при наведении
+                backgroundColor: "#4CAF50", 
+                color: "white",  
+                padding: "10px 20px", 
+                fontSize: "16px", 
+                fontWeight: "bold", 
+                borderRadius: "30px", 
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", 
+                transition: "all 0.3s ease", 
                 "&:hover": {
-                  backgroundColor: "#45a049", // Более темный зеленый при наведении
-                  transform: "scale(1.05)", // Легкое увеличение кнопки
+                  backgroundColor: "#45a049",
+                  transform: "scale(1.05)", 
                 },
               }}
               onClick={handleLoginOpen}
@@ -208,7 +244,7 @@ const LandingPage = ({ setAuthenticated }) => {
         </Box>
       </Box>
 
-      {/* Основной контент */}
+   
       <Box
         sx={{
           position: "relative",
@@ -217,7 +253,7 @@ const LandingPage = ({ setAuthenticated }) => {
           marginTop: "50px",
         }}
       >
-        {/* Fitness Highlights */}
+       
         <Grid
           container
           spacing={4}

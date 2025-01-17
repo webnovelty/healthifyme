@@ -6,34 +6,34 @@
 }
 
 .MuiToolbar-root {
-  min-height: 50px !important; /* Уменьшаем высоту */
-  padding: 0 !important; /* Убираем внутренние отступы */
+  min-height: 50px !important; 
+  padding: 0 !important; 
   display: flex;
-  align-items: center; /* Центрируем содержимое по вертикали */
+  align-items: center;
 }
 
 .logo {
   width: 200px;
   height: auto;
   transition: width 0.3s ease;
-  margin: 0; /* Убираем все внешние отступы */
+  margin: 0; 
 }
 
 @media (max-width: 1024px) {
   .logo {
-    width: 150px; /* Размер для планшетов */
+    width: 150px; 
   }
 }
 
 @media (max-width: 768px) {
   .logo {
-    width: 120px; /* Размер для мобильных устройств */
+    width: 120px; 
   }
 }
 
 @media (max-width: 480px) {
   .logo {
-    width: 80px; /* Размер для маленьких экранов */
+    width: 80px; 
   }
 }
 
@@ -41,22 +41,22 @@
   width: 500px;
   height: auto;
   transition: width 0.3s ease;
-  margin: 0; /* Убираем все внешние отступы */
+  margin: 0;
 }
 @media (max-width: 1024px) {
   .logo_on_LG {
-    width: 300px; /* Размер для планшетов */
+    width: 300px;
   }
 }
 
 @media (max-width: 768px) {
   .logo_on_LG {
-    width: 200px; /* Размер для мобильных устройств */
+    width: 200px;
   }
 }
 
 @media (max-width: 480px) {
   .logo_on_LG {
-    width: 200px; /* Размер для маленьких экранов */
+    width: 200px; 
   }
 }

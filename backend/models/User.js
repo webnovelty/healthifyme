@@ -5,9 +5,9 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   avatar: { type: String, default: "" },
-  weight: { type: Number, default: 0 }, // Поле для веса
-  height: { type: Number, default: 0 }, // Поле для роста
-  age: { type: Number, default: 0 }, // Поле для возраста
+  weight: { type: Number, default: 0 }, 
+  height: { type: Number, default: 0 }, 
+  age: { type: Number, default: 0 }, 
   water: { type: Number, default: 0 },
   steps: { type: Number, default: 0 },
   calories: { type: Number, default: 0 },

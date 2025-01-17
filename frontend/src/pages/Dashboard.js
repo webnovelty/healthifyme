@@ -79,9 +79,8 @@ const Dashboard = () => {
     const token = Cookies.get("token");
 
     try {
-      const inputValue = parseInt(inputFields[field], 10) || 0; // Значение из поля ввода
-      const updatedValue = userData[field] + inputValue; // Добавляем к текущему значению
-
+      const inputValue = parseInt(inputFields[field], 10) || 0; // Value from the input field
+      const updatedValue = userData[field] + inputValue; // Add to the current value
       await axios.put(
         "http://localhost:5000/api/user/update",
         { [field]: updatedValue },
@@ -97,7 +96,7 @@ const Dashboard = () => {
         [field]: updatedValue,
       }));
 
-      // Сбрасываем только поле ввода
+      // Reset only the input field
       setInputFields((prev) => ({
         ...prev,
         [field]: 0,
@@ -135,25 +134,25 @@ const Dashboard = () => {
         position: "top-center",
         autoClose: 3000,
       });
-        setUserData({ water: 0, steps: 0, calories: 0 });
-       // Повторно запрашиваем данные истории
-    const historyResponse = await axios.get(
-      "http://localhost:5000/api/user/history",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+      setUserData({ water: 0, steps: 0, calories: 0 });
+      // Request history data again
+      const historyResponse = await axios.get(
+        "http://localhost:5000/api/user/history",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-    // Обновляем состояние графика
-    setHistoryData(historyResponse.data);
-  } catch (error) {
-    console.error("Error ending the day:", error);
+      // Update the state of the graph
+      setHistoryData(historyResponse.data);
+    } catch (error) {
+      console.error("Error ending the day:", error);
 
-    // Отображаем уведомление об ошибке
-    toast.error("Failed to end the day.", {
-      position: "top-center",
-      autoClose: 3000,
-    });
+      // Display error notification
+      toast.error("Failed to end the day.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
     }
   };
   return (

@@ -21,7 +21,7 @@ const Settings = () => {
     age: "",
   });
 
-  const [isEditing, setIsEditing] = useState(false); // Для редактирования данных
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -73,7 +73,7 @@ const Settings = () => {
 
       setUserData((prev) => ({
         ...prev,
-        avatar: response.data.avatar, // Обновляем URL аватарки
+        avatar: response.data.avatar, 
       }));
 
       toast.success("Avatar updated successfully!");
@@ -105,7 +105,7 @@ const Settings = () => {
 
       setUserData((prev) => ({
         ...prev,
-        ...response.data, // Обновляем URL аватарки
+        ...response.data, 
       }));
 
       toast.success("Settings updated successfully!");

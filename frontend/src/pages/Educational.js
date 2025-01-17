@@ -1,4 +1,3 @@
-// src/pages/Educational.js
 
 import {
   Box,
