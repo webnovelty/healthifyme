@@ -147,9 +147,12 @@ const Dashboard = () => {
   return (
     <Box sx={{ padding: 4, backgroundColor: "#F5F5F5", minHeight: "100vh" }}>
       <ToastContainer />
-
       <Typography variant="h4" gutterBottom>
         Welcome, {userName}!
+      </Typography>
+      <Typography variant="h7" gutterBottom>
+        Here you can enter how much water you drank, how many steps you walked
+        and how many calories you have consumed today.
       </Typography>
 
       <Grid container spacing={3}>
@@ -194,13 +197,11 @@ const Dashboard = () => {
           </Grid>
         ))}
       </Grid>
-
       <Box mt={4}>
         <Button variant="contained" color="secondary" onClick={handleEndDay}>
           End Day
         </Button>
       </Box>
-
       <Box mt={4}>
         <Typography variant="h6" gutterBottom>
           Progress History
