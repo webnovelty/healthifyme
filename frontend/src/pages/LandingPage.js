@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import logo from "../image/healthifyme.svg"; 
+import logo from "../image/healthifyme.svg";
 
 const LandingPage = ({ setAuthenticated }) => {
   const [registerOpen, setRegisterOpen] = useState(false); // State for registration modal
@@ -24,61 +24,61 @@ const LandingPage = ({ setAuthenticated }) => {
   const handleLoginOpen = () => setLoginOpen(true);
   const handleLoginClose = () => setLoginOpen(false);
 
-    const handleRegister = async () => {
-      // Check that all fields are filled in
-      if (!name.trim() || !email.trim() || !password.trim()) {
-        toast.error("All fields are required!", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        return; // Stop execution if validation fails
-      }
-      try {
-        const response = await axios.post(
-          "http://localhost:5000/api/auth/register",
-          {
-            name,
-            email,
-            password,
-          }
-        );
-        // Save the token to cookies
-        Cookies.set("token", response.data.token, { expires: 1 }); // validity period - 1 day
+  const handleRegister = async () => {
+    // Check that all fields are filled in
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      toast.error("All fields are required!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      return; // Stop execution if validation fails
+    }
+    try {
+      const response = await axios.post(
+        "https://healthifyme-backend.onrender.com/api/auth/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      // Save the token to cookies
+      Cookies.set("token", response.data.token, { expires: 1 }); // validity period - 1 day
 
-        toast.success("Registration successful!", {
-          position: "top-center",
-          autoClose: 3000,
-        });
-        setAuthenticated(true); // Update authentication state
-        setRegisterOpen(false);
-        navigate("/"); // Redirect to the authenticated page
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.message || "Registration failed.";
-        console.error(errorMessage);
+      toast.success("Registration successful!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      setAuthenticated(true); // Update authentication state
+      setRegisterOpen(false);
+      navigate("/"); // Redirect to the authenticated page
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Registration failed.";
+      console.error(errorMessage);
 
-        // Показываем ошибку через toast
-        toast.error(errorMessage, {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
-    };
+      // Показываем ошибку через toast
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
 
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://healthifyme-backend.onrender.com/api/auth/login",
         {
           email,
           password,
@@ -157,7 +157,7 @@ const LandingPage = ({ setAuthenticated }) => {
             zIndex: 2,
             flex: 1,
             display: "flex",
-            justifyContent: { xs: "center", md: "flex-start" }, 
+            justifyContent: { xs: "center", md: "flex-start" },
             alignItems: "center",
             padding: 2,
             gap: { xs: "20px", md: "250px" },
@@ -166,15 +166,14 @@ const LandingPage = ({ setAuthenticated }) => {
           <img src={logo} alt="HealthifyMe Logo" className="logo_on_LG" />
         </Box>
 
-        
         <Box
           sx={{
             position: "relative",
             zIndex: 2,
             flex: "1 1 auto",
-            textAlign: { xs: "center", md: "left" }, 
+            textAlign: { xs: "center", md: "left" },
             padding: 2,
-            marginTop: { xs: 4, md: 0 }, 
+            marginTop: { xs: 4, md: 0 },
           }}
         >
           <Typography
@@ -191,8 +190,8 @@ const LandingPage = ({ setAuthenticated }) => {
             sx={{
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
-              justifyContent: { xs: "center", md: "flex-end" }, 
-              gap: 2, 
+              justifyContent: { xs: "center", md: "flex-end" },
+              gap: 2,
               marginTop: 2,
             }}
           >
@@ -201,17 +200,17 @@ const LandingPage = ({ setAuthenticated }) => {
               variant="contained"
               color="primary"
               sx={{
-                backgroundColor: "#87CEEB", 
-                color: "white", 
-                padding: "10px 20px", 
-                fontSize: "16px", 
-                fontWeight: "bold", 
-                borderRadius: "30px", 
-                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", 
-                transition: "all 0.3s ease", 
+                backgroundColor: "#87CEEB",
+                color: "white",
+                padding: "10px 20px",
+                fontSize: "16px",
+                fontWeight: "bold",
+                borderRadius: "30px",
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+                transition: "all 0.3s ease",
                 "&:hover": {
-                  backgroundColor: "#45a049", 
-                  transform: "scale(1.05)", 
+                  backgroundColor: "#45a049",
+                  transform: "scale(1.05)",
                 },
               }}
               onClick={handleRegisterOpen}
@@ -223,17 +222,17 @@ const LandingPage = ({ setAuthenticated }) => {
               variant="outlined"
               color="secondary"
               sx={{
-                backgroundColor: "#4CAF50", 
-                color: "white",  
-                padding: "10px 20px", 
-                fontSize: "16px", 
-                fontWeight: "bold", 
-                borderRadius: "30px", 
-                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)", 
-                transition: "all 0.3s ease", 
+                backgroundColor: "#4CAF50",
+                color: "white",
+                padding: "10px 20px",
+                fontSize: "16px",
+                fontWeight: "bold",
+                borderRadius: "30px",
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+                transition: "all 0.3s ease",
                 "&:hover": {
                   backgroundColor: "#45a049",
-                  transform: "scale(1.05)", 
+                  transform: "scale(1.05)",
                 },
               }}
               onClick={handleLoginOpen}
@@ -244,7 +243,6 @@ const LandingPage = ({ setAuthenticated }) => {
         </Box>
       </Box>
 
-   
       <Box
         sx={{
           position: "relative",
@@ -253,7 +251,6 @@ const LandingPage = ({ setAuthenticated }) => {
           marginTop: "50px",
         }}
       >
-       
         <Grid
           container
           spacing={4}

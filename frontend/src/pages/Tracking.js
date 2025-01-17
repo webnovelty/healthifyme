@@ -27,7 +27,7 @@ const Tracking = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/user/user-info",
+          "https://healthifyme-backend.onrender.com/api/user/user-info",
           {
             headers: {
               Authorization: `Bearer ${token}`,

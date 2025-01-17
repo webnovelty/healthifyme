@@ -30,7 +30,7 @@ const Settings = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/user/user-info",
+          "https://healthifyme-backend.onrender.com/api/user/user-info",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ const Settings = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:5000/api/user/update-avatar",
+        "https://healthifyme-backend.onrender.com/api/user/update-avatar",
         formData,
         {
           headers: {
@@ -93,7 +93,7 @@ const Settings = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:5000/api/user/update",
+        "https://healthifyme-backend.onrender.com/api/user/update",
         formData,
         {
           headers: {
@@ -136,7 +136,7 @@ const Settings = () => {
                 <img
                   src={
                     userData.avatar && userData.avatar !== "/default-avatar.png"
-                      ? `http://localhost:5000${userData.avatar}`
+                      ? `https://healthifyme-backend.onrender.com${userData.avatar}`
                       : "/default-avatar.png"
                   }
                   alt="User Avatar"

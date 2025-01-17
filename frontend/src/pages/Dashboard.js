@@ -48,7 +48,7 @@ const Dashboard = () => {
 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/user/user-info",
+          "https://healthifyme-backend.onrender.com/api/user/user-info",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -60,7 +60,7 @@ const Dashboard = () => {
           calories: response.data.calories || 0,
         });
         const historyResponse = await axios.get(
-          "http://localhost:5000/api/user/history",
+          "https://healthifyme-backend.onrender.com/api/user/history",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -82,7 +82,7 @@ const Dashboard = () => {
       const inputValue = parseInt(inputFields[field], 10) || 0; // Value from the input field
       const updatedValue = userData[field] + inputValue; // Add to the current value
       await axios.put(
-        "http://localhost:5000/api/user/update",
+        "https://healthifyme-backend.onrender.com/api/user/update",
         { [field]: updatedValue },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -124,7 +124,7 @@ const Dashboard = () => {
     const token = Cookies.get("token");
     try {
       await axios.post(
-        "http://localhost:5000/api/user/end-day",
+        "https://healthifyme-backend.onrender.com/api/user/end-day",
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -137,7 +137,7 @@ const Dashboard = () => {
       setUserData({ water: 0, steps: 0, calories: 0 });
       // Request history data again
       const historyResponse = await axios.get(
-        "http://localhost:5000/api/user/history",
+        "https://healthifyme-backend.onrender.com/api/user/history",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
